@@ -19,7 +19,7 @@ E-Wallet adalah pembayaran via aplikasi dompet digital. Setelah create transacti
 | `shopeepay` | ShopeePay | Rp 1.000 | Rp 10.000.000 | — |
 | `linkaja` | LinkAja | Rp 1.000 | Rp 10.000.000 | — |
 
-:::warning OVO
+:::warning[OVO]
 Untuk channel `ovo`, parameter `customer_phone` **wajib** diisi karena OVO menggunakan nomor HP sebagai identitas pengguna.
 :::
 

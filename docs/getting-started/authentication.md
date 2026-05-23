@@ -40,7 +40,7 @@ API Key adalah kredensial rahasia yang mengidentifikasi merchant Anda. Paymenku 
 
 ## Keamanan
 
-:::danger Penting
+:::danger[Penting]
 - **Jangan pernah** expose API Key di client-side (frontend, mobile app, atau repository publik)
 - Simpan API Key di environment variable atau secret manager
 - Gunakan HTTPS untuk semua komunikasi

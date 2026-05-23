@@ -10,9 +10,9 @@ Membatalkan transaksi yang masih dalam status `pending`. Setelah cancel, transak
 
 <span class="api-method api-method--post">POST</span> `/transaction/cancel`
 
-:::warning Keterbatasan
+:::warning[Keterbatasan]
 Saat ini fitur cancel hanya support:
-- Channel **QRIS** via provider **Paylabs**
+- Channel **QRIS**
 - Mode **sandbox**
 :::
 
@@ -115,7 +115,7 @@ Channel tidak support cancel:
 
 ---
 
-:::info Aturan Cancel
+:::info[Aturan Cancel]
 - Hanya transaksi dengan status `pending` yang bisa di-cancel.
 - Setelah cancel, status berubah menjadi `cancelled` dan **tidak bisa di-revert**.
 - Webhook `payment.status_updated` akan terkirim dengan `status: "cancelled"`.

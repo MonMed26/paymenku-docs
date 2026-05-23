@@ -184,7 +184,7 @@ try {
 
 ## Tips
 
-:::tip Best Practices
+:::tip[Best Practices]
 1. **Selalu handle error** — jangan asumsikan request selalu berhasil
 2. **Implementasi retry** — untuk error 500 dan 429, gunakan exponential backoff
 3. **Log semua error** — simpan response lengkap untuk debugging

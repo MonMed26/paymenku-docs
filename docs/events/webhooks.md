@@ -88,7 +88,7 @@ Setiap webhook disertai header untuk verifikasi keaslian:
 signature = HMAC-SHA256(timestamp + "." + raw_body, webhook_secret)
 ```
 
-:::danger Penting
+:::danger[Penting]
 **Selalu verifikasi signature** sebelum memproses webhook. Tanpa verifikasi, endpoint Anda rentan terhadap request palsu.
 :::
 
@@ -254,7 +254,7 @@ Setelah 5 attempt gagal, webhook ditandai sebagai **failed** dan tidak akan di-r
 
 ## Requirements
 
-:::warning Persyaratan Server
+:::warning[Persyaratan Server]
 - Response **HTTP 2xx** dalam waktu **15 detik**
 - Endpoint harus **idempotent** — webhook yang sama bisa dikirim lebih dari sekali
 - Gunakan `trx_id` atau `reference_id` untuk deduplikasi

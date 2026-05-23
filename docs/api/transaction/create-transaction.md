@@ -6,7 +6,7 @@ description: Membuat transaksi pembayaran baru
 
 # Create Transaction
 
-Membuat transaksi pembayaran baru. Sistem secara otomatis me-route ke provider yang sesuai (Xendit, Paylabs, QRIS2, atau Zipay) berdasarkan `channel_code`.
+Membuat transaksi pembayaran baru. Sistem secara otomatis memilih jalur pembayaran yang sesuai berdasarkan `channel_code`.
 
 <span class="api-method api-method--post">POST</span> `/transaction/create`
 
@@ -207,7 +207,7 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
 
 ## Catatan Penting
 
-:::warning Perhatian
+:::warning[Perhatian]
 - `amount` di response sudah **termasuk fee**. Ini adalah jumlah yang harus dibayar pelanggan.
 - `reference_id` harus **unik** per transaksi. Duplikasi akan menghasilkan error `422`.
 - Gunakan header `Idempotency-Key` untuk mencegah duplikasi karena network retry — lihat [Idempotency](/getting-started/idempotency).

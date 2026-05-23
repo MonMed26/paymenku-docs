@@ -10,9 +10,9 @@ Refund transaksi yang sudah berstatus `paid`. Dana akan otomatis didebit dari sa
 
 <span class="api-method api-method--post">POST</span> `/transaction/refund`
 
-:::warning Keterbatasan
+:::warning[Keterbatasan]
 Saat ini fitur refund hanya support:
-- Channel **E-Wallet** via provider **Paylabs**
+- Channel **E-Wallet**
 - Mode **sandbox**
 
 Refund untuk Virtual Account dan QRIS belum tersedia.
@@ -153,7 +153,7 @@ Channel tidak support refund:
 
 ---
 
-:::info Aturan Refund
+:::info[Aturan Refund]
 - Saldo merchant harus **cukup** untuk menutupi `refund_amount`.
 - **Fee tidak dikembalikan** — yang di-refund hanya nominal transaksi, bukan biaya layanan.
 - Webhook `payment.status_updated` akan terkirim dengan `status: "refunded"`.

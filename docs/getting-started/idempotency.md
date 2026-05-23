@@ -82,7 +82,7 @@ Tidak membuat transaksi baru, mengembalikan response asli.
 
 ## Best Practices
 
-:::tip Rekomendasi Key
+:::tip[Rekomendasi Key]
 Gunakan kombinasi yang **deterministic** dan **unique per logical operation**:
 
 ```
@@ -94,7 +94,7 @@ order-42-retry-attempt
 Hindari random key per attempt — itu menggagalkan tujuan idempotency.
 :::
 
-:::warning Hati-hati
+:::warning[Hati-hati]
 - **Body harus identik** — kalau body berbeda dengan key yang sama, request bisa ditolak `409 Conflict`.
 - **Jangan pakai key yang sama** untuk operasi yang memang seharusnya beda.
 - TTL 24 jam — setelah lewat, key bisa dipakai ulang dan akan diproses sebagai request baru.

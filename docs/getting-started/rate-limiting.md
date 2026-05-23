@@ -62,7 +62,7 @@ Content-Type: application/json
 
 ## Best Practices
 
-:::tip Strategi Retry
+:::tip[Strategi Retry]
 1. **Hormati `Retry-After`** — tunggu sesuai instruksi server
 2. **Exponential backoff** — gandakan delay setiap retry gagal
 3. **Cache response** — kurangi panggilan untuk data yang jarang berubah (mis. `payment-channels`)

@@ -130,6 +130,6 @@ curl "https://paymenku.com/api/v1/transactions?channel_code=qris&sort_by=amount&
 
 ---
 
-:::tip Tips
+:::tip[Tips]
 Gunakan endpoint ini untuk **dashboard reporting** atau **rekonsiliasi periodik**. Untuk update status real-time, gunakan [Webhooks](/events/webhooks).
 :::

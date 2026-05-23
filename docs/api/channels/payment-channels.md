@@ -107,6 +107,7 @@ Lihat halaman terpisah untuk daftar lengkap kode channel per tipe:
 - [Virtual Account](/api/channels/virtual-account) — BCA, BNI, BRI, Mandiri, Permata, CIMB
 - [E-Wallet](/api/channels/ewallet) — DANA, OVO, ShopeePay, LinkAja
 - [QRIS](/api/channels/qris) — QRIS Universal
+- [QRIS Custom](/api/channels/qris-custom) — Pakai QRIS milik merchant sendiri (`qris_own`)
 
 :::info
 Ketersediaan channel dapat berubah. Selalu gunakan endpoint ini untuk mendapatkan daftar terbaru channel yang aktif untuk akun Anda.

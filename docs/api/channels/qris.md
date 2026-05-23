@@ -143,6 +143,6 @@ Merchant → QR → Customer scan → Approve di app → Webhook → Display suc
 QRIS sangat cocok untuk **POS offline** atau **e-commerce dengan UX cepat**. Pelanggan tidak perlu pilih bank/wallet — cukup scan dengan aplikasi favoritnya.
 :::
 
-:::info Polling Status
+:::info[Polling Status]
 Karena QRIS tidak punya callback dari aplikasi pembayar, **selalu** andalkan webhook untuk konfirmasi. Jika perlu konfirmasi cepat di UI, polling [Check Status](/api/transaction/check-status) tiap 3-5 detik adalah pola yang umum.
 :::

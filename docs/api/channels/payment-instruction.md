@@ -103,7 +103,7 @@ curl "https://paymenku.com/api/v1/payment/instruction?code=bca_va&pay_code=38165
 | `instructions[].title` | string | Nama metode (mis: `"ATM BCA"`) |
 | `instructions[].steps[]` | array of string | Langkah-langkah berurutan |
 
-:::info HTML vs Plain Text
+:::info[HTML vs Plain Text]
 Saat `allow_html=1` (default), `steps` mungkin berisi tag HTML (`<b>`, `<i>`, `<br>`) untuk formatting. Saat `allow_html=0`, semua tag di-strip menjadi plain text.
 :::
 

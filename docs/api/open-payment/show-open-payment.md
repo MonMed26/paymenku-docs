@@ -10,7 +10,7 @@ Mengambil detail Open Payment — sebuah Virtual Account **reusable** dengan nom
 
 <span class="api-method api-method--get">GET</span> `/open-payment/{uuid}`
 
-:::info Tentang Open Payment
+:::info[Tentang Open Payment]
 **Open Payment** adalah VA yang tidak perlu di-create per transaksi. Satu VA bisa menerima banyak pembayaran dengan nominal yang berbeda-beda dari pelanggan yang sama.
 
 Cocok untuk:
@@ -112,10 +112,10 @@ curl "https://paymenku.com/api/v1/open-payment/550e8400-e29b-41d4-a716-446655440
 
 ## Catatan
 
-:::warning Endpoint Create di-Disable
+:::warning[Endpoint Create di-Disable]
 Endpoint **`POST /open-payment/create`** sementara di-disable dan akan mengembalikan `503 Service Unavailable`.
 
-Fitur ini menunggu provider **Paylabs Static VA** aktif kembali. Update akan diumumkan via dashboard merchant.
+Fitur ini menunggu integrasi Static VA aktif kembali. Update akan diumumkan via dashboard merchant.
 
 Untuk sementara, Open Payment harus dibuat manual via dashboard di **Settings → Open Payment**.
 :::

@@ -36,6 +36,7 @@ const sidebars: SidebarsConfig = {
             'api/channels/virtual-account',
             'api/channels/ewallet',
             'api/channels/qris',
+            'api/channels/qris-custom',
           ],
         },
         'api/channels/fee-calculator',

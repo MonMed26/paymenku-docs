@@ -126,7 +126,7 @@ curl "https://paymenku.com/api/v1/open-payment/550e8400-e29b-41d4-a716-446655440
 
 ---
 
-:::tip Use Case
+:::tip[Use Case]
 Endpoint ini cocok untuk:
 - Riwayat top-up di profile pelanggan
 - Laporan donasi periodik
