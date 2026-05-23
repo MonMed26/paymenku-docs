@@ -18,6 +18,10 @@ Login ke [dashboard merchant](https://paymenku.com/merchant/login), buka **Setti
 | Sandbox | `sk_test_` | Testing & development |
 | Production | `sk_live_` | Transaksi nyata |
 
+:::tip
+Mode (production/sandbox) **auto-deteksi** dari prefix API key — tidak perlu config terpisah.
+:::
+
 ---
 
 ## 2. Buat Transaksi Pertama
@@ -26,13 +30,15 @@ Login ke [dashboard merchant](https://paymenku.com/merchant/login), buka **Setti
 curl -X POST https://paymenku.com/api/v1/transaction/create \
   -H "Authorization: Bearer sk_test_xxxxxxx" \
   -H "Content-Type: application/json" \
+  -H "Idempotency-Key: ORDER-001-20260118" \
   -d '{
-    "reference_id": "ORDER-001",
+    "channel_code": "qris",
     "amount": 50000,
+    "reference_id": "ORDER-001",
     "customer_name": "Budi Santoso",
     "customer_email": "budi@example.com",
     "customer_phone": "08123456789",
-    "channel_code": "qris"
+    "return_url": "https://toko-anda.com/success"
   }'
 ```
 
@@ -45,6 +51,7 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
   "status": "success",
   "data": {
     "trx_id": "IDP202602271040123456",
+    "reference_id": "ORDER-001",
     "amount": "50350.00",
     "status": "pending",
     "pay_url": "https://paymenku.com/pay/IDP202602271040123456",
@@ -72,10 +79,15 @@ Setelah pelanggan membayar, Paymenku mengirim notifikasi ke webhook URL Anda:
   "reference_id": "ORDER-001",
   "status": "paid",
   "amount": "50350.00",
+  "total_fee": "350.00",
   "amount_received": "50000.00",
   "paid_at": "2026-01-18T03:33:18.000000Z"
 }
 ```
+
+:::warning
+Selalu **verifikasi signature** webhook sebelum memproses. Lihat [Webhooks](/events/webhooks).
+:::
 
 ---
 
@@ -94,15 +106,15 @@ curl -X GET https://paymenku.com/api/v1/check-status/ORDER-001 \
 
 ```php
 <?php
-$apiKey = 'sk_test_xxxxxxx';
+$apiKey = getenv('PAYMENKU_API_KEY');
 
 $payload = [
-    'reference_id'   => 'INV-' . time(),
+    'channel_code'   => 'dana',
     'amount'         => 100000,
+    'reference_id'   => 'INV-' . time(),
     'customer_name'  => 'Budi Santoso',
     'customer_email' => 'budi@example.com',
     'customer_phone' => '08123456789',
-    'channel_code'   => 'dana',
     'return_url'     => 'https://toko-anda.com/success',
 ];
 
@@ -113,7 +125,7 @@ curl_setopt_array($ch, [
     CURLOPT_HTTPHEADER     => [
         'Authorization: Bearer ' . $apiKey,
         'Content-Type: application/json',
-        'Accept: application/json',
+        'Idempotency-Key: ' . $payload['reference_id'],
     ],
     CURLOPT_POSTFIELDS => json_encode($payload),
 ]);
@@ -123,7 +135,6 @@ $data = json_decode($response, true);
 curl_close($ch);
 
 if ($data['status'] === 'success') {
-    // Redirect ke halaman pembayaran
     header('Location: ' . $data['data']['pay_url']);
     exit;
 }
@@ -132,20 +143,22 @@ if ($data['status'] === 'success') {
 ## Contoh Integrasi (Node.js)
 
 ```javascript
+const referenceId = `INV-${Date.now()}`;
+
 const response = await fetch('https://paymenku.com/api/v1/transaction/create', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer sk_test_xxxxxxx',
+    'Authorization': `Bearer ${process.env.PAYMENKU_API_KEY}`,
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    'Idempotency-Key': referenceId,
   },
   body: JSON.stringify({
-    reference_id: `INV-${Date.now()}`,
+    channel_code: 'dana',
     amount: 100000,
+    reference_id: referenceId,
     customer_name: 'Budi Santoso',
     customer_email: 'budi@example.com',
     customer_phone: '08123456789',
-    channel_code: 'dana',
     return_url: 'https://toko-anda.com/success',
   }),
 });
@@ -153,7 +166,6 @@ const response = await fetch('https://paymenku.com/api/v1/transaction/create', {
 const data = await response.json();
 
 if (data.status === 'success') {
-  // Redirect ke halaman pembayaran
   console.log('Pay URL:', data.data.pay_url);
 }
 ```
@@ -163,6 +175,8 @@ if (data.status === 'success') {
 ## Langkah Selanjutnya
 
 - [Authentication](/getting-started/authentication) — Detail autentikasi API
-- [Payment Channels](/api/payment-channels) — Lihat semua metode pembayaran
-- [Create Transaction](/api/create-transaction) — Referensi lengkap endpoint
+- [Rate Limiting](/getting-started/rate-limiting) — Limit request & retry strategy
+- [Idempotency](/getting-started/idempotency) — Cegah duplicate transaction
+- [Payment Channels](/api/channels/payment-channels) — Lihat semua metode pembayaran
+- [Create Transaction](/api/transaction/create-transaction) — Referensi lengkap endpoint
 - [Webhooks](/events/webhooks) — Setup notifikasi pembayaran

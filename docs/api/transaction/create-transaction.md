@@ -1,14 +1,22 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 title: Create Transaction
 description: Membuat transaksi pembayaran baru
 ---
 
 # Create Transaction
 
-Membuat transaksi pembayaran baru. Response bervariasi tergantung `channel_code` yang dipilih.
+Membuat transaksi pembayaran baru. Sistem secara otomatis me-route ke provider yang sesuai (Xendit, Paylabs, QRIS2, atau Zipay) berdasarkan `channel_code`.
 
 <span class="api-method api-method--post">POST</span> `/transaction/create`
+
+---
+
+## Endpoint
+
+```
+https://paymenku.com/api/v1/transaction/create
+```
 
 ---
 
@@ -20,19 +28,20 @@ Membuat transaksi pembayaran baru. Response bervariasi tergantung `channel_code`
 Authorization: Bearer sk_live_xxxxxxx
 Content-Type: application/json
 Accept: application/json
+Idempotency-Key: INV-001-20260118
 ```
 
 ### Body Parameters
 
 | Parameter | Type | Required | Keterangan |
 |-----------|------|:--------:|------------|
-| `reference_id` | string | ✓ | ID referensi unik dari sistem Anda (maks 50 karakter) |
-| `amount` | integer | ✓ | Jumlah pembayaran dalam Rupiah (min: 10000) |
+| `channel_code` | string | ✓ | Kode payment channel (mis: `bca_va`, `dana`, `qris`) |
+| `amount` | number | ✓ | Nominal pembayaran dalam Rupiah (min: 1.000) |
+| `reference_id` | string | ✓ | ID unik dari sistem Anda (maks 50 karakter) |
 | `customer_name` | string | ✓ | Nama pelanggan |
-| `customer_email` | string | ✓ | Email pelanggan (format valid) |
-| `customer_phone` | string | ✓ | Nomor telepon pelanggan |
-| `channel_code` | string | ✓ | Kode channel dari [Payment Channels](/api/payment-channels) |
-| `return_url` | string | — | URL redirect setelah pembayaran selesai |
+| `customer_email` | email | ✓ | Email pelanggan (format valid) |
+| `return_url` | url | ✓ | URL redirect setelah pembayaran selesai |
+| `customer_phone` | string | — | Nomor HP pelanggan (**wajib untuk OVO**) |
 
 ---
 
@@ -47,12 +56,12 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
   -H "Authorization: Bearer sk_live_xxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
-    "reference_id": "INV-001",
+    "channel_code": "dana",
     "amount": 100000,
+    "reference_id": "INV-001",
     "customer_name": "John Doe",
     "customer_email": "john@example.com",
     "customer_phone": "08123456789",
-    "channel_code": "dana",
     "return_url": "https://toko-anda.com/success"
   }'
 ```
@@ -64,6 +73,7 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
   "status": "success",
   "data": {
     "trx_id": "IDP202602271040123456",
+    "reference_id": "INV-001",
     "amount": "100000.00",
     "status": "pending",
     "pay_url": "https://paymenku.com/pay/IDP202602271040123456",
@@ -87,12 +97,11 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
   -H "Authorization: Bearer sk_live_xxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
-    "reference_id": "INV-002",
+    "channel_code": "qris",
     "amount": 100000,
+    "reference_id": "INV-002",
     "customer_name": "John Doe",
     "customer_email": "john@example.com",
-    "customer_phone": "08123456789",
-    "channel_code": "qris",
     "return_url": "https://toko-anda.com/success"
   }'
 ```
@@ -104,6 +113,7 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
   "status": "success",
   "data": {
     "trx_id": "IDP202602271042567890",
+    "reference_id": "INV-002",
     "amount": "100700.00",
     "status": "pending",
     "pay_url": "https://paymenku.com/pay/IDP202602271042567890",
@@ -127,12 +137,11 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
   -H "Authorization: Bearer sk_live_xxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
-    "reference_id": "INV-003",
+    "channel_code": "bca_va",
     "amount": 100000,
+    "reference_id": "INV-003",
     "customer_name": "John Doe",
     "customer_email": "john@example.com",
-    "customer_phone": "08123456789",
-    "channel_code": "bca_va",
     "return_url": "https://toko-anda.com/success"
   }'
 ```
@@ -144,6 +153,7 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
   "status": "success",
   "data": {
     "trx_id": "IDP202602271039768990",
+    "reference_id": "INV-003",
     "amount": "104000.00",
     "status": "pending",
     "pay_url": "https://paymenku.com/pay/IDP202602271039768990",
@@ -163,7 +173,8 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
 | Field | Type | Keterangan |
 |-------|------|------------|
 | `trx_id` | string | ID transaksi unik dari Paymenku |
-| `amount` | string | Total yang harus dibayar (termasuk fee) |
+| `reference_id` | string | ID referensi dari merchant |
+| `amount` | string | Total yang harus dibayar (sudah termasuk fee) |
 | `status` | string | Status awal: selalu `pending` |
 | `pay_url` | string | URL halaman pembayaran Paymenku |
 | `payment_info` | object | Detail pembayaran (bervariasi per channel) |
@@ -198,15 +209,17 @@ curl -X POST https://paymenku.com/api/v1/transaction/create \
 
 :::warning Perhatian
 - `amount` di response sudah **termasuk fee**. Ini adalah jumlah yang harus dibayar pelanggan.
-- `reference_id` harus **unik** per transaksi. Duplikasi akan menghasilkan error.
+- `reference_id` harus **unik** per transaksi. Duplikasi akan menghasilkan error `422`.
+- Gunakan header `Idempotency-Key` untuk mencegah duplikasi karena network retry — lihat [Idempotency](/getting-started/idempotency).
 - Transaksi yang tidak dibayar akan otomatis **expired** setelah waktu yang ditentukan.
+- Untuk channel `ovo`, parameter `customer_phone` **wajib** diisi.
 :::
 
 ---
 
 ## Error Response
 
-Lihat [Error Codes](/api/error-codes) untuk daftar lengkap error yang mungkin terjadi.
+Lihat [Error Codes](/api/error-codes) untuk daftar lengkap error.
 
 ```json
 {

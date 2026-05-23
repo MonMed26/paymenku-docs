@@ -12,6 +12,14 @@ Mengecek status transaksi secara manual berdasarkan `trx_id` atau `reference_id`
 
 ---
 
+## Endpoint
+
+```
+https://paymenku.com/api/v1/check-status/{order_id}
+```
+
+---
+
 ## Request
 
 ### Path Parameters
@@ -30,10 +38,11 @@ Accept: application/json
 
 ### cURL
 
+Menggunakan `trx_id`:
+
 ```bash
 curl -X GET https://paymenku.com/api/v1/check-status/IDP202602271039768990 \
   -H "Authorization: Bearer sk_live_xxxxxxx" \
-  -H "Content-Type: application/json" \
   -H "Accept: application/json"
 ```
 
@@ -42,7 +51,6 @@ Atau menggunakan `reference_id`:
 ```bash
 curl -X GET https://paymenku.com/api/v1/check-status/INV-001 \
   -H "Authorization: Bearer sk_live_xxxxxxx" \
-  -H "Content-Type: application/json" \
   -H "Accept: application/json"
 ```
 
@@ -94,9 +102,9 @@ curl -X GET https://paymenku.com/api/v1/check-status/INV-001 \
 | `payment_channel` | object | Detail channel pembayaran |
 | `payment_channel.code` | string | Kode channel |
 | `payment_channel.name` | string | Nama channel |
-| `payment_channel.type` | string | Tipe channel |
+| `payment_channel.type` | string | Tipe channel (`va`, `ewallet`, `qris`) |
 | `pay_url` | string | URL halaman pembayaran |
-| `paid_at` | string\|null | Waktu pembayaran (null jika belum bayar) |
+| `paid_at` | string \| null | Waktu pembayaran (null jika belum bayar) |
 | `created_at` | string | Waktu transaksi dibuat |
 | `updated_at` | string | Waktu terakhir diupdate |
 
@@ -110,6 +118,8 @@ curl -X GET https://paymenku.com/api/v1/check-status/INV-001 \
 | `paid` | Pembayaran berhasil diterima |
 | `failed` | Pembayaran gagal |
 | `expired` | Transaksi melewati batas waktu pembayaran |
+| `cancelled` | Transaksi dibatalkan via [Cancel Transaction](/api/transaction/cancel-transaction) |
+| `refunded` | Dana dikembalikan via [Refund Transaction](/api/transaction/refund-transaction) |
 
 ---
 

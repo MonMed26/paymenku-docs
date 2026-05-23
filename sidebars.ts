@@ -6,31 +6,58 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Getting Started',
-      collapsed: false,
       items: [
         'getting-started/quick-start',
         'getting-started/authentication',
+        'getting-started/rate-limiting',
+        'getting-started/idempotency',
       ],
     },
     {
       type: 'category',
-      label: 'API Reference',
-      collapsed: false,
+      label: 'Transaction',
       items: [
-        'api/payment-channels',
-        'api/create-transaction',
-        'api/check-status',
-        'api/error-codes',
+        'api/transaction/create-transaction',
+        'api/transaction/list-transactions',
+        'api/transaction/check-status',
+        'api/transaction/cancel-transaction',
+        'api/transaction/refund-transaction',
       ],
     },
     {
       type: 'category',
-      label: 'Events & Webhooks',
-      collapsed: false,
+      label: 'Channel & Fee',
+      items: [
+        'api/channels/payment-channels',
+        {
+          type: 'category',
+          label: 'Metode Pembayaran',
+          items: [
+            'api/channels/virtual-account',
+            'api/channels/ewallet',
+            'api/channels/qris',
+          ],
+        },
+        'api/channels/fee-calculator',
+        'api/channels/payment-instruction',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Open Payment',
+      items: [
+        'api/open-payment/show-open-payment',
+        'api/open-payment/open-payment-transactions',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Webhook',
       items: [
         'events/webhooks',
       ],
     },
+    'api/error-codes',
   ],
 };
 

@@ -86,14 +86,16 @@ const config: Config = {
             {label: 'Introduction', to: '/'},
             {label: 'Quick Start', to: '/getting-started/quick-start'},
             {label: 'Authentication', to: '/getting-started/authentication'},
+            {label: 'Idempotency', to: '/getting-started/idempotency'},
           ],
         },
         {
           title: 'API Reference',
           items: [
-            {label: 'Payment Channels', to: '/api/payment-channels'},
-            {label: 'Create Transaction', to: '/api/create-transaction'},
-            {label: 'Check Status', to: '/api/check-status'},
+            {label: 'Create Transaction', to: '/api/transaction/create-transaction'},
+            {label: 'Check Status', to: '/api/transaction/check-status'},
+            {label: 'Payment Channels', to: '/api/channels/payment-channels'},
+            {label: 'Fee Calculator', to: '/api/channels/fee-calculator'},
           ],
         },
         {

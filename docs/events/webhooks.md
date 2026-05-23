@@ -60,14 +60,14 @@ Setiap webhook dikirim sebagai HTTP POST dengan body JSON:
 | `event` | string | Nama event yang terjadi |
 | `trx_id` | string | ID transaksi Paymenku |
 | `reference_id` | string | ID referensi dari merchant |
-| `status` | string | Status baru: `paid`, `failed`, `expired` |
+| `status` | string | Status baru: `paid`, `failed`, `expired`, `cancelled`, `refunded` |
 | `amount` | string | Total amount (termasuk fee) |
 | `total_fee` | string | Total biaya layanan |
 | `amount_received` | string | Jumlah bersih yang diterima merchant |
 | `payment_channel` | string | Kode channel pembayaran |
 | `customer_name` | string | Nama pelanggan |
 | `customer_email` | string | Email pelanggan |
-| `paid_at` | string\|null | Waktu pembayaran |
+| `paid_at` | string \| null | Waktu pembayaran |
 | `created_at` | string | Waktu transaksi dibuat |
 | `is_sandbox` | boolean | `true` jika transaksi sandbox |
 
@@ -130,6 +130,13 @@ switch ($data['status']) {
     case 'expired':
         updateOrderStatus($data['reference_id'], 'expired');
         break;
+    case 'cancelled':
+        updateOrderStatus($data['reference_id'], 'cancelled');
+        break;
+    case 'refunded':
+        updateOrderStatus($data['reference_id'], 'refunded');
+        // Trigger pengembalian barang / pembatalan layanan
+        break;
 }
 
 // Response 200 OK
@@ -176,6 +183,12 @@ app.post('/webhook/paymenku', express.raw({ type: 'application/json' }), (req, r
       break;
     case 'expired':
       console.log(`Order ${data.reference_id} expired`);
+      break;
+    case 'cancelled':
+      console.log(`Order ${data.reference_id} cancelled`);
+      break;
+    case 'refunded':
+      console.log(`Order ${data.reference_id} refunded`);
       break;
   }
 

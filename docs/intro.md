@@ -16,10 +16,13 @@ API kami dirancang berdasarkan prinsip **REST**, menggunakan **HTTPS** pada semu
 
 | Fitur | Keterangan |
 |-------|------------|
-| Virtual Account | BCA, BNI, BRI, Mandiri, Permata, dan lainnya |
+| Virtual Account | BCA, BNI, BRI, Mandiri, Permata, CIMB |
 | E-Wallet | DANA, OVO, ShopeePay, LinkAja |
 | QRIS | Pembayaran via scan QR universal |
-| Webhook | Notifikasi real-time saat status berubah |
+| Open Payment | VA reusable untuk top-up & donasi |
+| Refund & Cancel | Pembatalan dan refund transaksi |
+| Webhook | Notifikasi real-time saat status berubah (HMAC-SHA256) |
+| Idempotency | Cegah duplicate request dengan `Idempotency-Key` |
 | Sandbox | Environment testing tanpa transaksi nyata |
 
 ---
@@ -86,6 +89,7 @@ Semua response menggunakan format JSON yang konsisten:
 
 ## Butuh Bantuan?
 
+- Dokumentasi: [docs.paymenku.com](https://docs.paymenku.com)
 - Dashboard: [paymenku.com/merchant/login](https://paymenku.com/merchant/login)
 - Email: support@paymenku.com
 - Website: [paymenku.com/contact](https://paymenku.com/contact)
